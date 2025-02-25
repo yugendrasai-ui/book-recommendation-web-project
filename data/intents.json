@@ -1,0 +1,94 @@
+{
+  "intents": [
+    {
+      "tag": "Fiction",
+      "patterns": [
+        "Fiction",
+        "Recommend a Fiction book"
+      ],
+      "responses": [
+        [
+          {
+            "Book": "Gilead",
+            "Rate": 3.85
+          },
+          {
+            "Book": "Rage of angels",
+            "Rate": 3.93
+          },
+          {
+            "Book": "Warhost of Vastmark",
+            "Rate": 4.03
+          },
+          {
+            "Book": "Taken at the Flood",
+            "Rate": 3.71
+          },
+          {
+            "Book": "The Yiddish Policemen's Union",
+            "Rate": 3.7
+          },
+          {
+            "Book": "The Silmarillion",
+            "Rate": 3.91
+          },
+          {
+            "Book": "Tropic of Cancer",
+            "Rate": 3.69
+          },
+          {
+            "Book": "The Love of the Last Tycoon",
+            "Rate": 3.65
+          },
+          {
+            "Book": "The Song of Rhiannon",
+            "Rate": 4.02
+          }
+        ]
+      ]
+    },
+    {
+      "tag": "Juvenile Fiction",
+      "patterns": [
+        "Juvenile Fiction",
+        "Recommend a Juvenile Fiction book"
+      ],
+      "responses": [
+        [
+          {
+            "Book": "Ocean Star Express",
+            "Rate": 3.5
+          },
+          {
+            "Book": "The voyage of the Dawn Treader",
+            "Rate": 4.09
+          },
+          {
+            "Book": "Rest, Rabbit, Rest",
+            "Rate": 4.01
+          },
+          {
+            "Book": "Where the Red Fern Grows",
+            "Rate": 4.37
+          },
+          {
+            "Book": "Poppy's Return",
+            "Rate": 3.99
+          },
+          {
+            "Book": "Diary of a Spider",
+            "Rate": 4.25
+          },
+          {
+            "Book": "The Amazing Maurice and His Educated Rodents",
+            "Rate": 4.05
+          },
+          {
+            "Book": "The Wee Free Men",
+            "Rate": 4.27
+          }
+        ]
+      ]
+    }
+  ]
+}
