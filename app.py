@@ -5,42 +5,28 @@ import sys
 import pickle
 import pandas as pd
 import traceback
-import importlib.util
+
+# Get the absolute path of the current project directory
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Add the project directory to Python path
-project_dir = r'F:\book recomendation web'
-sys.path.append(project_dir)
+sys.path.append(BASE_DIR)
 
-# Dynamic import of BookRecommendationSystem
-def import_class_from_file(module_name, class_name, file_path):
-    spec = importlib.util.spec_from_file_location(module_name, file_path)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return getattr(module, class_name)
-
-# Import BookRecommendationSystem
-try:
-    BookRecommendationSystem = import_class_from_file(
-        'book_recommendation_system', 
-        'BookRecommendationSystem', 
-        os.path.join(project_dir, 'book_recommendation_system.py')
-    )
-except Exception as e:
-    print(f"Error importing BookRecommendationSystem: {e}")
-    raise
+# Import BookRecommendationSystem directly
+from book_recommendation_system import BookRecommendationSystem
 
 # Create Flask application
 app = Flask(__name__, 
-            template_folder=os.path.join(project_dir, 'templates'),
-            static_folder=project_dir)
+            template_folder=os.path.join(BASE_DIR, 'templates'),
+            static_folder=BASE_DIR)
 
 # Enable CORS for all routes
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 class RecommendationService:
     def __init__(self, 
-                 model_path=r'F:\book recomendation web\models\book_recommendation_model.pk3', 
-                 data_path=r'F:\book recomendation web\data\data.csv'):
+                 model_path=os.path.join(BASE_DIR, 'models', 'book_recommendation_model.pk3'), 
+                 data_path=os.path.join(BASE_DIR, 'data', 'data.csv')):
         try:
             print("Model Path:", model_path)
             print("Data Path:", data_path)
@@ -50,9 +36,21 @@ class RecommendationService:
             if not os.path.exists(data_path):
                 raise FileNotFoundError(f"Data file not found: {data_path}")
             
-            # Load the pre-trained model using the new method
-            self.recommender = BookRecommendationSystem.load_model(model_path)
-            print("Recommendation system loaded successfully!")
+            try:
+                # Try to load the pre-trained model
+                with open(model_path, 'rb') as f:
+                    self.recommender = pickle.load(f)
+                print("Recommendation system loaded successfully!")
+            except Exception as load_error:
+                print(f"Error loading model: {load_error}")
+                print("Creating new BookRecommendationSystem...")
+                # If loading fails, create a new model
+                books_df = pd.read_csv(data_path)
+                self.recommender = BookRecommendationSystem(books_df)
+                # Save the new model
+                with open(model_path, 'wb') as f:
+                    pickle.dump(self.recommender, f)
+                print("New recommendation system created and saved!")
             
             # Load the dataset
             self.books_df = pd.read_csv(data_path)
